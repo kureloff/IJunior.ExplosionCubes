@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Divider : MonoBehaviour
@@ -28,28 +27,27 @@ public class Divider : MonoBehaviour
     {
         if (hit.collider.TryGetComponent(out Cube cube))
         {
-            GameObject cubeObject = cube.gameObject;
-            List<GameObject> fragments = new List<GameObject>();
+            List<Cube> fragments = new List<Cube>();
+
+            cube.Explode();
 
             if (Random.Range(MinPercent, MaxPercent) <= cube.SplitChance)
             {
-                Divide(cubeObject, fragments);
+                Divide(cube, fragments);
             }
 
-            _spawner.DestroyObject(cube);
+            _exploder.Explode(fragments, cube.transform.position);
         }
     }
 
-    private void Divide(GameObject cubeObject, List<GameObject> fragments)
+    private void Divide(Cube cube, List<Cube> fragments)
     {
         int randomCount = Random.Range(MinCountFragments, MaxCountFragments);
 
         for (int i = 0; i < randomCount; i++)
         {
-            fragments.Add(_spawner.CreateFragments(cubeObject));
+            fragments.Add(_spawner.CreateFragments(cube));
         }
-
-        _exploder.Explode(fragments, cubeObject.transform.position);
     }
 }
 

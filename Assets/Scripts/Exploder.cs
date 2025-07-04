@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class Exploder : MonoBehaviour
 {
-    private float _explosionForce = 300;
-    private float _explosionRadius = 10;
+    private const float ExplosionForce = 300;
+    private const float ExplosionRadius = 10;
 
-    public void Explode(List<GameObject> gameObjects, Vector3 explodePosition)
+    public void Explode(List<Cube> cubes, Vector3 explodePosition)
     {
-        foreach (GameObject gameObject in gameObjects)
-            if (gameObject.TryGetComponent(out Rigidbody rigidbody))
-                rigidbody.AddExplosionForce(_explosionForce, explodePosition, _explosionRadius);
+        foreach (Cube cube in cubes)
+            if (cube.TryGetComponent(out Rigidbody rigidbody))
+                rigidbody.AddExplosionForce(ExplosionForce, explodePosition, ExplosionRadius);
     }
 }

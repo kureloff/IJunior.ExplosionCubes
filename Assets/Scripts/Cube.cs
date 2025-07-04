@@ -1,12 +1,15 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Cube : MonoBehaviour
 {
-    [SerializeField] private float _splitChance = 100f;
-
     private Transform _transform;
     private Renderer _renderer;
+
+    private float _splitChance;
+
+    public event Action<Cube> Exploded;
 
     public Vector3 LocalScale => _transform.localScale;
     public float SplitChance => _splitChance;
@@ -19,18 +22,13 @@ public class Cube : MonoBehaviour
 
     public void Initialize(Color color, Vector3 scale, float splitChance)
     {
-        ChangeColor(color);
-        ChangeScale(scale);
+        _renderer.material.color = color;
+        _transform.localScale = scale;
         _splitChance = splitChance;
     }
 
-    public void ChangeColor(Color color)
+    public void Explode()
     {
-        _renderer.material.color = color;
-    }
-
-    public void ChangeScale(Vector3 scale)
-    {
-        _transform.localScale = scale;
+        Exploded?.Invoke(this);
     }
 }
