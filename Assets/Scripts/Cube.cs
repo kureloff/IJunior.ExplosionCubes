@@ -6,6 +6,7 @@ public class Cube : MonoBehaviour
 {
     private Transform _transform;
     private Renderer _renderer;
+    private Rigidbody _rigidbody;
 
     private float _splitChance;
 
@@ -13,11 +14,13 @@ public class Cube : MonoBehaviour
 
     public Vector3 LocalScale => _transform.localScale;
     public float SplitChance => _splitChance;
+    public Rigidbody Rigidbody => _rigidbody;
 
     private void Awake()
     {
         _transform = transform;
         _renderer = GetComponent<Renderer>();
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     public void Initialize(Color color, Vector3 scale, float splitChance)

@@ -7,11 +7,8 @@ public class Divider : MonoBehaviour
     [SerializeField] private Exploder _exploder;
     [SerializeField] private Spawner _spawner;
 
-    private const int MinPercent = 0;
-    private const int MaxPercent = 100;
-
-    private const int MinCountFragments = 2;
-    private const int MaxCountFragments = 6;
+    private int _minCountFragments = 2;
+    private int _maxCountFragments = 6;
 
     private void OnEnable()
     {
@@ -25,13 +22,16 @@ public class Divider : MonoBehaviour
 
     private void TryDivide(RaycastHit hit)
     {
+        int minPercent = 0;
+        int maxPercent = 100;
+
         if (hit.collider.TryGetComponent(out Cube cube))
         {
             List<Cube> fragments = new List<Cube>();
 
             cube.Explode();
 
-            if (Random.Range(MinPercent, MaxPercent) <= cube.SplitChance)
+            if (Random.Range(minPercent, maxPercent + 1) <= cube.SplitChance)
             {
                 Divide(cube, fragments);
             }
@@ -42,11 +42,11 @@ public class Divider : MonoBehaviour
 
     private void Divide(Cube cube, List<Cube> fragments)
     {
-        int randomCount = Random.Range(MinCountFragments, MaxCountFragments);
+        int randomCount = Random.Range(_minCountFragments, _maxCountFragments + 1);
 
         for (int i = 0; i < randomCount; i++)
         {
-            fragments.Add(_spawner.CreateFragments(cube));
+            fragments.Add(_spawner.CreateFragment(cube));
         }
     }
 }

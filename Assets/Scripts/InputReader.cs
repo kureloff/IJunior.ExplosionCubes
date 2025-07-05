@@ -1,10 +1,11 @@
 ﻿using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Camera))]
 public class InputReader : MonoBehaviour
 {
-    private const int LeftMouseButton = 0;
-    private const float MaxDistanceRay = 100;
+    private int _mouseButtonHit = 0;
+    private float _maxDistanceRay = 100;
 
     private Camera _camera;
 
@@ -17,20 +18,15 @@ public class InputReader : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(LeftMouseButton))
+        if (Input.GetMouseButtonDown(_mouseButtonHit))
         {
-            ConvertMousePositionToHit();
-        }
-    }
+            Vector3 mousePosition = Input.mousePosition;
+            Ray ray = _camera.ScreenPointToRay(mousePosition);
 
-    private void ConvertMousePositionToHit()
-    {
-        Vector3 mousePosition = Input.mousePosition;
-        Ray ray = _camera.ScreenPointToRay(mousePosition);
-
-        if(Physics.Raycast(ray, out RaycastHit hit, MaxDistanceRay))
-        {
-            HitReceived?.Invoke(hit);
+            if (Physics.Raycast(ray, out RaycastHit hit, _maxDistanceRay))
+            {
+                HitReceived?.Invoke(hit);
+            }
         }
     }
 }
